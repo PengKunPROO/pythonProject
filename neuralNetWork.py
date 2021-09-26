@@ -61,6 +61,40 @@ def initialize_parameters(n_x,n_h,n_y):  # 主要是初始化w1，b1，一个通
     return parameters  # 最后返回一个字典，可以通过字典得到需要的参数值并进行更新
 
 
+def sigmoid_tanh(para):
+    """
+    :param para: 传入矩阵或者单个数据
+    :return: 返回tanh计算过的值
+    """
+    return np.tanh(para)
+
+
+def forward_propagation(x_input, paras):
+    """
+    :param x_input: 输入数据
+    :param paras: 装着初始参数的字典
+    :return:
+    """
+    w1 = paras['w1']
+    b1 = paras['b1']
+    w2 = paras['w2']
+    b2 = paras['b2']
+
+    z1 = np.dot(w1, x_input)+b1
+    a1 = sigmoid_tanh(z1)
+    z2 = np.dot(w2, a1)+b2
+    a2 = sigmoid(z2)
+
+    assert (a2.shape == (1, x_input.shape[1]))  # a2是输出层的值，所以需要保证其值是（1,400）
+
+    dictionary = {'z1': z1,
+                  'a1': a1,
+                  'z2': z2,
+                  'a2': a2}
+
+    return a2, dictionary  # 返回a2是因为需要方便的得到a2来进行反向传播
+
+
 
 
 
