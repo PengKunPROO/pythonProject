@@ -1,3 +1,5 @@
+import math
+
 import numpy as np
 import matplotlib.pyplot as plt
 from testCases import *
@@ -23,11 +25,12 @@ X,Y=load_planar_dataset()  # 获取数据 X是包含特征的numpy数组 Y是包
 # -------------------------START------------------------- #
 
 
-def layer_size(X,Y):
-    n_x = X.shape[0]  # 这是输入层大小
+def layer_size(x_para, y_para):
+    n_x = x_para.shape[0]  # 这是输入层大小
     n_h = 4  # 这是隐藏层大小，因为只有一个隐藏层所以不加n_h1这种标记了
-    n_y = Y.shape[0]  # 这是输出层大小，因为Y代表的是所有样本的特征，就是答案的意思，所以Y的行数就是要输出的大小
-    return (n_x, n_h, n_y)
+    n_y = y_para.shape[0]  # 这是输出层大小，因为Y代表的是所有样本的特征，就是答案的意思，所以Y的行数就是要输出的大小
+    return n_x, n_h, n_y
+
 
 def initialize_parameters(n_x,n_h,n_y):  # 主要是初始化w1，b1，一个通式就是，有多少隐藏层，就得初始化多少个W和B
     """
@@ -59,6 +62,47 @@ def initialize_parameters(n_x,n_h,n_y):  # 主要是初始化w1，b1，一个通
                   'w2': w2,
                   'b2': b2}
     return parameters  # 最后返回一个字典，可以通过字典得到需要的参数值并进行更新
+
+
+def sigmoid_tanh(para):
+    """
+    :param para: 参数是传入的值
+    :return: 需要返回一个由tanh计算过的值
+    """
+    temp_value = np.tanh(para)
+    return temp_value
+
+
+def forward_propragation(x_input, parameters):
+    """
+    Argument:
+    :param x_input: 用于输入样本数据，其shape是（n_x，m）nx是输入层节点数目，m是总共样本的数量
+    :param parameters: 用于将w，b参数写入网络中并进行计算，得到输出
+    :return:
+    """
+
+    w1 = parameters['w1']
+    b1 = parameters['b1']
+    w2 = parameters['w2']
+    b2 = parameters['b2']
+
+    Z1 = np.dot(w1, x_input)+b1
+    A1 = sigmoid_tanh(Z1)
+    Z2 = np.dot(w2, A1)+b2
+    A2 = sigmoid(Z2)
+
+    assert (A2.shape == (1, x_input.shape[1]))  # 保证A2即输出层的shape为（1，400）
+
+    dictionary={'A1': A1,
+                'Z1': Z1,
+                'A2': A2,
+                'Z2': Z2
+                }
+
+    return A2, dictionary  # 返回A2是因为需要方便的得到A2，而用dictionary需要
+
+
+
 
 
 
