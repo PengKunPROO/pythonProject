@@ -23,13 +23,14 @@ X,Y=load_planar_dataset()  # 获取数据 X是包含特征的numpy数组 Y是包
 # -------------------------START------------------------- #
 
 
-def layer_size(X,Y):
+def layer_size(X, Y):
     n_x = X.shape[0]  # 这是输入层大小
     n_h = 4  # 这是隐藏层大小，因为只有一个隐藏层所以不加n_h1这种标记了
     n_y = Y.shape[0]  # 这是输出层大小，因为Y代表的是所有样本的特征，就是答案的意思，所以Y的行数就是要输出的大小
-    return (n_x, n_h, n_y)
+    return n_x, n_h, n_y
 
-def initialize_parameters(n_x,n_h,n_y):  # 主要是初始化w1，b1，一个通式就是，有多少隐藏层，就得初始化多少个W和B
+
+def initialize_parameters(n_x, n_h, n_y):  # 主要是初始化w1，b1，一个通式就是，有多少隐藏层，就得初始化多少个W和B
     """
         Argument:
         n_x -- size of the input layer
